@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "Locadora";
+}
+@model RentViewModel
+
+<div class="row">
+    @foreach (var movie in Model.Movies)
+    {
+        <div class="col-2 bg-light m-2 py-2">
+            <div class="panel panel-default text-center">
+                <div class="panel-body">
+                    <img src="/img/movie.svg" />
+                </div>
+                <div class="panel-footer">
+                    <div>@movie.Name</div>
+                    <div><h5><strong>@movie.Price</strong></h5></div>
+                    <div class="text-center">
+                        <a asp-action="addmovie"
+                           asp-route-id="@movie.Id"
+                           class="btn btn-sm btn-outline-primary">Adicionar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (Model.Rent.Movies != null && Model.Rent.Movies.Count > 0)
+{
+    <table class="table mt-5">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Filme</th>
+                <th scope="col" class="text-center">Valor para locação</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model.Rent.Movies)
+            {
+                <tr>
+                    <th scope="row">@movie.Movie.Code</th>
+                    <td>@movie.Movie.Name</td>
+                    <td class="text-center">R$ @movie.Movie.Price</td>
+                    <td>
+                        <a asp-action="removeMovie"
+                           asp-route-id="@movie.Movie.Id"
+                           class="btn btn-sm btn-danger">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="col-12 my-5 text-right">
+        <a class="btn btn-success" asp-controller="summary">Continuar</a>
+    </div>
+}

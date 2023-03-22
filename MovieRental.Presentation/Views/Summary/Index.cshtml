@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewData["Title"] = "Resumo";
+}
+@model SummaryViewModel
+
+<form id="rentForm" action="Summary/SaveRent" method="post">
+    <div class="row">
+        <div class="form-group col mt-2">
+            <label for="CustomerId">Cliente: </label>
+            <select asp-for="CustomerId" asp-items="Model.Customers" class="form-control" onchange="onChangeCustomer()"></select>
+        </div>
+        <div class="form-group invisible col mt-2">
+            <label for="customerCode">Codigo </label>
+            <input type="text" class="form-control" disabled id="customerCode"/>
+        </div>
+        <div class="form-group invisible col mt-2">
+            <label for="customerEmail">Email: </label>
+            <input type="text" class="form-control" disabled id="customerEmail"/>
+        </div>
+    </div>
+</form>
+@if (Model.Rent.Movies != null && Model.Rent.Movies.Count > 0)
+{
+    <table class="table mt-3">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Filme</th>
+                <th scope="col" class="text-center">Valor para locação</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model.Rent.Movies)
+            {
+                <tr>
+                    <th scope="row">@movie.Movie.Code</th>
+                    <td>@movie.Movie.Name</td>
+                    <td class="text-center">R$ @movie.Movie.Price</td>
+                    <td>
+                        <a asp-action="removeMovie"
+                   asp-route-id="@movie.Movie.Id"
+                           class="btn btn-sm btn-danger">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="col-12 my-5 text-right">
+        <button id="finishButton" class="btn btn-success" form="rentForm" disabled>Finalizar</button>
+    </div>
+}
